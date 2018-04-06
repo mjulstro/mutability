@@ -1,0 +1,12 @@
+source 'https://rubygems.org'
+
+ruby "2.5.0"
+
+group :development do
+  gem "rake"
+end
+
+group :test do
+  gem "minitest"
+  gem "minitest-reporters"
+end

@@ -45,7 +45,7 @@ type alias Model =
 type alias Entry =
     { description : String
     , completed : Bool
-    , editing : Bool
+    --, editing : Bool
     , id : Int
     }
 
@@ -62,7 +62,7 @@ newEntry : String -> Int -> Entry
 newEntry desc id =
     { description = desc
     , completed = False
-    , editing = False
+    --, editing = False
     , id = id
     }
 
@@ -76,7 +76,7 @@ to them.
 -}
 type Msg
     = UpdateNewEntryField String
-    | EditingEntry Int Bool
+    --| EditingEntry Int Bool
     | UpdateEntry Int String
     | Add
     | Delete Int
@@ -102,18 +102,18 @@ update msg model =
         UpdateNewEntryField str ->
             { model | newEntryField = str }
 
-        EditingEntry id isEditing ->
-            let
-                updateEntry t =
-                    if t.id == id then
-                        { t | editing = isEditing }
-                    else
-                        t
+        --EditingEntry id isEditing ->
+        --    let
+        --        updateEntry t =
+        --            if t.id == id then
+        --                { t | editing = isEditing }
+        --            else
+        --                t
 
-                focus =
-                    Dom.focus ("todo-" ++ toString id)
-            in
-                { model | entries = List.map updateEntry model.entries }
+        --        focus =
+        --            Dom.focus ("todo-" ++ toString id)
+        --    in
+        --        { model | entries = List.map updateEntry model.entries }
 
         UpdateEntry id task ->
             let
@@ -229,7 +229,7 @@ viewKeyedEntry todo =
 viewEntry : Entry -> Html Msg
 viewEntry todo =
     li
-        [ classList [ ( "completed", todo.completed ), ( "editing", todo.editing ) ] ]
+        [ classList [ ( "completed", todo.completed ){--, ( "editing", todo.editing )--} ] ]
         [ div
             [ class "view" ]
             [ input
@@ -240,7 +240,7 @@ viewEntry todo =
                 ]
                 []
             , label
-                [ onDoubleClick (EditingEntry todo.id True) ]
+                [ {--onDoubleClick (EditingEntry todo.id True)--} ]
                 [ text todo.description ]
             , button
                 [ class "destroy"
@@ -254,8 +254,8 @@ viewEntry todo =
             , name "title"
             , id ("todo-" ++ toString todo.id)
             , onInput (UpdateEntry todo.id)
-            , onBlur (EditingEntry todo.id False)
-            , onEnter (EditingEntry todo.id False)
+            --, onBlur (EditingEntry todo.id False)
+            --, onEnter (EditingEntry todo.id False)
             ]
             []
         ]
@@ -313,8 +313,8 @@ viewControlsClear entriesCompleted =
 infoFooter : Html msg
 infoFooter =
     footer [ class "info" ]
-        [ p [] [ text "Double-click to edit a todo" ]
-        , p []
+        [ {--p [] [ text "Double-click to edit a todo" ]--}
+        {--,--} p []
             [ text "Written by "
             , a [ href "https://github.com/evancz" ] [ text "Evan Czaplicki" ]
             ]

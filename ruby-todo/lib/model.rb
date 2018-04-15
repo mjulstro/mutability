@@ -5,7 +5,7 @@ class Model
       (entries.lazy.map(&:id).max || -1) + 1
   end
 
-  attr_accessor :entries, :new_entry_field, :next_id
+  attr_reader :entries, :new_entry_field, :next_id
 
   def ==(other)
     !other.nil? &&

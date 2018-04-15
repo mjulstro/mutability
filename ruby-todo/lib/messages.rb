@@ -2,13 +2,19 @@ module Msg
 
   class Add
     def apply_to(model)
+      new_model = Model.new(
+        entries: model.entries,
+        new_entry_field: "",
+        next_id: model.next_id)
       unless model.new_entry_field.blank?
-        model.entries << Entry.new(
-          description: model.new_entry_field,
-          id: model.next_id)
+        new_model = Model.new(
+          entries: model.entries + [Entry.new(
+            description: model.new_entry_field,
+            id: model.next_id)],
+          new_entry_field: "",
+          next_id: model.next_id+1)
       end
-      model.next_id += 1
-      model.new_entry_field = ""
+      new_model
     end
   end
 
@@ -20,7 +26,9 @@ module Msg
     attr_reader :str 
 
     def apply_to(model)
-      model.new_entry_field = str
+      Model.new(entries: model.entries,
+        new_entry_field: str,
+        next_id: model.next_id)
     end
   end
 
@@ -32,12 +40,23 @@ module Msg
     attr_reader :id, :is_completed 
 
     def apply_to(model)
+      new_model_entries = []
       model.entries.each do |entry|
         if entry.id == id
-          entry.completed = is_completed
+          new_model_entries.push(Entry.new(
+            id: id,
+            description: entry.description,
+            completed: is_completed))
+        else
+          new_model_entries.push(entry)
         end
       end
+      Model.new(
+        entries: new_model_entries,
+        new_entry_field: model.new_entry_field,
+        next_id: model.next_id)
     end
+
   end
 
   class Delete
@@ -48,13 +67,19 @@ module Msg
     attr_reader :id 
 
     def apply_to(model)
-      model.entries.reject! { |e| e.id == id }
+      new_model = Model.new(
+        entries: model.entries.reject { |e| e.id == id },
+        new_entry_field: model.new_entry_field,
+        next_id: model.next_id)
     end
   end
 
   class DeleteAllCompleted
     def apply_to(model)
-      model.entries.reject!(&:completed)
+      new_model = Model.new(
+        entries: model.entries.reject(&:completed),
+        new_entry_field: model.new_entry_field,
+        next_id: model.next_id)
     end
   end
 

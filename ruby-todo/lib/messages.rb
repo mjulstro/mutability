@@ -2,19 +2,15 @@ module Msg
 
   class Add
     def apply_to(model)
-      new_model = Model.new(
-        entries: model.entries,
-        new_entry_field: "",
-        next_id: model.next_id)
+      new_model_entries = model.entries
       unless model.new_entry_field.blank?
-        new_model = Model.new(
-          entries: model.entries + [Entry.new(
-            description: model.new_entry_field,
-            id: model.next_id)],
-          new_entry_field: "",
-          next_id: model.next_id+1)
+        new_model_entries = model.entries + [Entry.new(
+          description: model.new_entry_field,
+          id: model.next_id)]
       end
-      new_model
+      Model.new(entries: new_model_entries,
+        new_entry_field: "",
+        next_id: model.next_id + 1)
     end
   end
 

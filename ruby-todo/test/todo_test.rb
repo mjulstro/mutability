@@ -91,7 +91,7 @@ describe "Todo list" do
   end
 
   it "supports time travel" do
-    skip "Mutable model does not support time travel"
+    # skip "Mutable model does not support time travel"
 
     actual_history = Engine.run_with_history(Model.new, [
       Msg::UpdateNewEntryField.new("go forward in time"),

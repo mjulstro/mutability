@@ -37,6 +37,9 @@ enum Message {
                             description: entry.description,
                             completed: isCompleted))
                     }
+                    else {
+                        new_entries.append(entry)
+                    }
                 }
 
             case .delete(let id):

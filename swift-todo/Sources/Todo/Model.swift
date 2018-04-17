@@ -1,4 +1,4 @@
-class Model {
+struct Model {
     var entries: [Entry]
     var newEntryField: String
     var nextID: Int
@@ -11,7 +11,7 @@ class Model {
     }
 }
 
-class Entry {
+struct Entry {
     var id: Int
     var description: String
     var completed: Bool
